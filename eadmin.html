@@ -1,0 +1,890 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Events | CampusConnect</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc, #e0f2fe);
+            color: #1e293b;
+        }
+
+        /* Navbar */
+
+        nav {
+            background: #0f172a;
+            color: white;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #38bdf8;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 28px;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #38bdf8;
+        }
+
+        /* Main Container */
+
+        .container {
+            width: 90%;
+            max-width: 1150px;
+            margin: 50px auto;
+        }
+
+        /* Page Header */
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.8s ease;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #dbeafe;
+            color: #2563eb;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .page-header h1 span {
+            color: #4f46e5;
+        }
+
+        .page-header p {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        /* Content Layout */
+
+        .content {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        /* Form Card */
+
+        .form-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 22px;
+            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+            border: 1px solid #e2e8f0;
+            animation: slideLeft 0.8s ease;
+        }
+
+        .form-header {
+            margin-bottom: 25px;
+        }
+
+        .form-header h2 {
+            font-size: 25px;
+            margin-bottom: 7px;
+        }
+
+        .form-header p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* Form */
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            outline: none;
+            background: white;
+            font-size: 14px;
+            font-family: Arial, Helvetica, sans-serif;
+            transition: 0.3s;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 85px;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Add Button */
+
+        .add-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 11px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Events Section */
+
+        .events-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 22px;
+            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+            border: 1px solid #e2e8f0;
+            animation: slideRight 0.8s ease;
+        }
+
+        .events-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .events-header h2 {
+            font-size: 25px;
+        }
+
+        .event-count {
+            background: #dbeafe;
+            color: #2563eb;
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        /* Event Item */
+
+        .event {
+            border: 1px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            background: #f8fafc;
+            transition: 0.3s;
+        }
+
+        .event:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+        }
+
+        .event-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .event h3 {
+            font-size: 19px;
+            margin-bottom: 5px;
+        }
+
+        .event-organizer {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .status {
+            background: #dcfce7;
+            color: #15803d;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .event-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .detail {
+            color: #475569;
+            font-size: 13px;
+        }
+
+        .event-description {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        /* Action Buttons */
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .edit-btn,
+        .delete-btn {
+            padding: 9px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .edit-btn {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .edit-btn:hover {
+            background: #bfdbfe;
+        }
+
+        .delete-btn {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .delete-btn:hover {
+            background: #fecaca;
+        }
+
+        /* Footer */
+
+        footer {
+            background: #0f172a;
+            color: #94a3b8;
+            text-align: center;
+            padding: 25px;
+            margin-top: 50px;
+        }
+
+        footer strong {
+            color: white;
+        }
+
+        /* Animations */
+
+        @keyframes slideLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideRight {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+
+        @media (max-width: 850px) {
+
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 35px;
+            }
+
+            nav {
+                padding: 15px 5%;
+            }
+
+            nav a {
+                margin-left: 12px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .form-card,
+            .events-card {
+                padding: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .event-details {
+                grid-template-columns: 1fr;
+            }
+
+            .event-top {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- Navigation -->
+
+    <nav>
+
+        <div class="logo">
+            Campus<span>Connect</span>
+        </div>
+
+        <div>
+            <a href="index.html">Home</a>
+            <a href="events.html">Events</a>
+            <a href="registration.html">Register</a>
+            <a href="admin.html">Admin</a>
+        </div>
+
+    </nav>
+
+
+    <!-- Main Content -->
+
+    <main class="container">
+
+        <!-- Page Header -->
+
+        <section class="page-header">
+
+            <span class="tag">
+                ⚙️ ADMIN PANEL
+            </span>
+
+            <h1>
+                Manage <span>Events.</span>
+            </h1>
+
+            <p>
+                Create, update and manage college event information
+                from one place.
+            </p>
+
+        </section>
+
+
+        <!-- Content -->
+
+        <section class="content">
+
+
+            <!-- Add Event Form -->
+
+            <div class="form-card">
+
+                <div class="form-header">
+
+                    <h2>Add New Event</h2>
+
+                    <p>
+                        Enter the details of the new college event.
+                    </p>
+
+                </div>
+
+
+                <form>
+
+                    <!-- Event Name -->
+
+                    <div class="form-group">
+
+                        <label for="eventName">
+                            Event Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="eventName"
+                            placeholder="Enter event name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Date + Time -->
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="eventDate">
+                                Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="eventDate"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="eventTime">
+                                Time
+                            </label>
+
+                            <input
+                                type="time"
+                                id="eventTime"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Venue -->
+
+                    <div class="form-group">
+
+                        <label for="venue">
+                            Venue
+                        </label>
+
+                        <input
+                            type="text"
+                            id="venue"
+                            placeholder="e.g. Seminar Hall"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Organizer -->
+
+                    <div class="form-group">
+
+                        <label for="organizer">
+                            Organizer
+                        </label>
+
+                        <input
+                            type="text"
+                            id="organizer"
+                            placeholder="e.g. CSE Department"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Capacity -->
+
+                    <div class="form-group">
+
+                        <label for="capacity">
+                            Maximum Capacity
+                        </label>
+
+                        <input
+                            type="number"
+                            id="capacity"
+                            placeholder="e.g. 100"
+                            min="1"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Description -->
+
+                    <div class="form-group">
+
+                        <label for="description">
+                            Description
+                        </label>
+
+                        <textarea
+                            id="description"
+                            placeholder="Enter event description"
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- Button -->
+
+                    <button
+                        type="submit"
+                        class="add-btn"
+                    >
+                        ➕ Add Event
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- Existing Events -->
+
+            <div class="events-card">
+
+                <div class="events-header">
+
+                    <h2>Existing Events</h2>
+
+                    <span class="event-count">
+                        3 Events
+                    </span>
+
+                </div>
+
+
+                <!-- Event 1 -->
+
+                <div class="event">
+
+                    <div class="event-top">
+
+                        <div>
+
+                            <h3>
+                                💻 Tech Fest 2026
+                            </h3>
+
+                            <p class="event-organizer">
+                                Organized by CSE Department
+                            </p>
+
+                        </div>
+
+                        <span class="status">
+                            ACTIVE
+                        </span>
+
+                    </div>
+
+
+                    <div class="event-details">
+
+                        <div class="detail">
+                            📅 20 September 2026
+                        </div>
+
+                        <div class="detail">
+                            ⏰ 10:00 AM
+                        </div>
+
+                        <div class="detail">
+                            📍 Seminar Hall
+                        </div>
+
+                        <div class="detail">
+                            👥 Capacity: 200
+                        </div>
+
+                    </div>
+
+
+                    <p class="event-description">
+                        A technical event featuring coding contests,
+                        project exhibitions and technology workshops.
+                    </p>
+
+
+                    <div class="actions">
+
+                        <button
+                            class="edit-btn"
+                            type="button"
+                        >
+                            ✏️ Edit
+                        </button>
+
+                        <button
+                            class="delete-btn"
+                            type="button"
+                        >
+                            🗑️ Delete
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Event 2 -->
+
+                <div class="event">
+
+                    <div class="event-top">
+
+                        <div>
+
+                            <h3>
+                                🧑‍💻 Coding Contest
+                            </h3>
+
+                            <p class="event-organizer">
+                                Organized by Coding Club
+                            </p>
+
+                        </div>
+
+                        <span class="status">
+                            ACTIVE
+                        </span>
+
+                    </div>
+
+
+                    <div class="event-details">
+
+                        <div class="detail">
+                            📅 25 September 2026
+                        </div>
+
+                        <div class="detail">
+                            ⏰ 2:00 PM
+                        </div>
+
+                        <div class="detail">
+                            📍 Computer Lab
+                        </div>
+
+                        <div class="detail">
+                            👥 Capacity: 100
+                        </div>
+
+                    </div>
+
+
+                    <p class="event-description">
+                        Test your programming skills by solving
+                        challenging problems within a limited time.
+                    </p>
+
+
+                    <div class="actions">
+
+                        <button
+                            class="edit-btn"
+                            type="button"
+                        >
+                            ✏️ Edit
+                        </button>
+
+                        <button
+                            class="delete-btn"
+                            type="button"
+                        >
+                            🗑️ Delete
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Event 3 -->
+
+                <div class="event">
+
+                    <div class="event-top">
+
+                        <div>
+
+                            <h3>
+                                🎭 Cultural Fest
+                            </h3>
+
+                            <p class="event-organizer">
+                                Organized by Student Council
+                            </p>
+
+                        </div>
+
+                        <span class="status">
+                            ACTIVE
+                        </span>
+
+                    </div>
+
+
+                    <div class="event-details">
+
+                        <div class="detail">
+                            📅 30 September 2026
+                        </div>
+
+                        <div class="detail">
+                            ⏰ 5:00 PM
+                        </div>
+
+                        <div class="detail">
+                            📍 College Auditorium
+                        </div>
+
+                        <div class="detail">
+                            👥 Capacity: 500
+                        </div>
+
+                    </div>
+
+
+                    <p class="event-description">
+                        Celebrate talent and creativity through music,
+                        dance, drama and other cultural performances.
+                    </p>
+
+
+                    <div class="actions">
+
+                        <button
+                            class="edit-btn"
+                            type="button"
+                        >
+                            ✏️ Edit
+                        </button>
+
+                        <button
+                            class="delete-btn"
+                            type="button"
+                        >
+                            🗑️ Delete
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+
+    <footer>
+
+        <strong>CampusConnect</strong>
+
+        <p>
+            Student Event Management System © 2026
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
+```
